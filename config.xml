@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:rim="http://www.blackberry.com/ns/widgets" version="0.1.63" rim:header="RIM-Widget:rim/widget">
+    <name>Leaflet Map</name>
+    <description>This is an example of using Cloudmade's Leaflet Map and Twitter's Bootstrap.</description>
+    <author rim:copyright="2012">Research In Motion Limited</author>
+    <icon rim:hover="false" src="img/icons/app_86x86.png" />
+    <icon rim:hover="true" src="img/icons/app_86x86.png" />
+    <content src="map.html" />
+    <access uri="*" subdomains="true" />
+</widget>

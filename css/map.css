@@ -1,0 +1,79 @@
+body {
+    margin: 0;
+    padding-top: 40px;
+    font: 10pt Arial, sans-serif;
+}
+
+#map {
+    width: 100%;
+    height: 256px;
+    cursor: url(../img/hand_open.cur), auto;
+}
+
+#toolbar {
+    background: rgba(0, 0, 0, 0.25);
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+#toolbar-right {
+    background: rgba(0, 0, 0, 0.25);
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+#toolbar label {
+    display: inline;
+    font-weight: bold;
+}
+
+/*
+#documentation {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+*/
+
+.leaflet-control-layers-base label, .leaflet-control-layers-overlays label {
+    font: 12px Arial, Helvetica, sans-serif;
+    vertical-align: bottom;
+}
+
+.leaflet-control-layers-base label input, .leaflet-control-layers-overlays label input {
+    display: inline;
+}
+
+.map-tooltip {
+    margin: 0 auto;
+    text-align: center;
+    width: 180px;
+}
+
+.content {
+    padding: 10px;
+}
+
+.panel {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.wx-tooltip {
+    margin: 0 auto;
+    width: 170px;
+}
+
+.wx-temp {
+    font-size: 18pt;
+}

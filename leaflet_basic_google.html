@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Leaflet Map (Google)</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="lib/leaflet-0.3.1/leaflet.css">
+        <!--[if lte IE 8]><link rel="stylesheet" href="lib/leaflet-0.3.1/leaflet.ie.css"><![endif]-->
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript" src="lib/leaflet-0.3.1/leaflet.js"></script>
+        <script>
+        var tileUrl = "http://{s}.googleapis.com/vt?lyrs=m@174225136&src=apiv3&hl=en-US&x={x}&y={y}&z={z}&s=Galile&style=api%7Csmartmaps",
+            tileAttr = "Map data &copy; 2012 Google",
+            tileLayer = new L.TileLayer(tileUrl, {
+                maxZoom: 22,
+                subdomains: ['mt0', 'mt1'],
+                attribution: tileAttr
+            });
+
+        var map = new L.Map("map", {
+            center: new L.LatLng(43.6425778753, -79.3870621920),
+            zoom: 14
+        });
+
+        map.addLayer(tileLayer);
+        </script>
+    </body>
+</html>

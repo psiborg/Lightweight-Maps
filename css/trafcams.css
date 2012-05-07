@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    padding: 0;
+    font: 10pt Arial, sans-serif;
+}
+
+html, body, #map {
+    height: 100%;
+}
+
+#toolbar {
+    background: rgba(0, 0, 0, 0.25);
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+#centerpoint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+#dialog {
+    position: relative;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 10px;
+    -webkit-border-radius: 7px;
+    width: 600px;
+    margin-left: -300px;
+    height: 400px;
+    margin-top: -200px;
+}
+
+.map-tooltip {
+    margin: 0 auto;
+    text-align: center;
+    width: 180px;
+}

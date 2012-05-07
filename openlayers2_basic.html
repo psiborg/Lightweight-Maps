@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OpenLayers Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="http://openlayers.org/dev/examples/style.mobile.css" type="text/css">
+        <link rel="stylesheet" href="" type="text/css">
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+        }
+        .olControlAttribution {
+            position: absolute;
+            font-size: 10px;
+            bottom: 0 !important;
+            right: 0 !important;
+            background: rgba(0,0,0,0.1);
+            font-family: Arial;
+            padding: 2px 4px;
+            border-radius: 5px 0 0 0;
+        }
+        #title, #tags, #shortdesc {
+            display: none;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript" src="http://openlayers.org/dev/OpenLayers.mobile.js"></script>
+        <script>
+        var map = new OpenLayers.Map({
+            div: "map",
+            controls: [
+                new OpenLayers.Control.Zoom()
+            ],
+            layers: [
+                new OpenLayers.Layer.OSM("OpenStreetMap", null, {
+                    transitionEffect: 'resize'
+                })
+            ]
+        });
+
+        map.setCenter(
+            new OpenLayers.LonLat(-79.387, 43.643).transform(
+                new OpenLayers.Projection("EPSG:4326"),
+                map.getProjectionObject()
+            ), 14
+        );
+        </script>
+    </body>
+</html>

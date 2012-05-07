@@ -1,0 +1,2 @@
+app_*.*
+http://www.iconarchive.com/show/mobile-icons-by-webiconset/maps-icon.html

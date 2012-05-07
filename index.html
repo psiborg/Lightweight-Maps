@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Lightweight Maps for Mobile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="img/icons/app_16x16.ico" rel="icon" type="image/x-icon">
+        <link href="lib/prettify/prettify.css" rel="stylesheet">
+        <link href="lib/prettify/sunburst.css" rel="stylesheet">
+        <link href="lib/bootstrap-2.0.2/css/bootstrap.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px; /* adjust for top nav bar */
+            }
+
+            figcaption, .fineprint {
+                font-size: 8pt;
+            }
+
+            .highlight {
+                background-color: #FF0;
+                border: 1px solid #CCC;
+                border-radius: 5px;
+            }
+
+            @-webkit-keyframes flyAway {
+                0% {
+                    -webkit-transform: rotate(0deg) translate(0px, 0px);
+                }
+                100% {
+                    -webkit-transform: rotate(15deg) translate(-1920px, -1200px);
+                }
+            }
+
+            .fly {
+                /*border: 1px solid #CCC;*/
+                -webkit-animation-name: flyAway;
+                -webkit-animation-timing-function: ease-in;
+                -webkit-animation-duration: 2s;
+                -webkit-animation-iteration-count: 1;
+                -webkit-transform: rotate(15deg) translate(-1920px, -1200px);
+            }
+        </style>
+        <link href="lib/bootstrap-2.0.2/css/bootstrap-responsive.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="shortcut icon" href="favicon.ico">
+    </head>
+
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">Blog</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="#">Home</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="trafcams.html" target="_blank">Leaflet + Traffic Cameras</a></li>
+                                    <li><a href="bootstrap.html" target="_blank">Bootstrap + Leaflet</a></li>
+                                    <li><a href="map.html" target="_blank">Bootstrap + Leaflet + Traffic Cameras + Weather</a></li>
+                                    <li class="divider"></li>
+                                    <li class="nav-header">Tests</li>
+                                    <li><a href="preload.html" target="_blank">Preloading Data</a></li>
+                                    <li><a href="trie.html" target="_blank">Trie Search</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" style="width: 600px;">
+            <h1>Lightweight Maps for Mobile</h1>
+            <h2>Part 1: Introduction to Map APIs and Libraries</h2>
+            <p>by Jim Ing</p>
+            <br>
+            <p>When it comes to building interactive maps for desktop web, most of us are quite comfortable using APIs like Google Maps or Bing Maps. But when we need to port or build something for mobile, it often feels like we're crumpling a clean sheet of paper into a paper ball. Certainly, dealing with a smaller screen size, slower processor, and less memory can feel like a frustrating step backwards. But if you consider that mobile devices have touch screens, cameras, microphones, accelerometers, wireless and GPS capabilities on top of being portable, mobile devices are in a way better place than desktop PCs. So if we take the time to understand their limitations and features, we can build lightweight applications that are more like origami &mdash; compact, elegant, and functional &mdash; instead of like a crumpled paper ball that you're ready to throw in the trash can.</p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <th>Desktop web development is like this...</th>
+                    <th>Mobile web can feel like this...</th>
+                    <th>But mobile should and can be like this...</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="img/sheet_sm.png" alt="Sheet of Paper" title="Sheet of Paper"></td>
+                        <td><img src="img/crumpled_sm.png" alt="Crumpled Paper Ball" title="Crumpled Paper Ball"></td>
+                        <td><img src="img/origami_sm.png" alt="Origami Airplane" title="Origami Airplane"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <td>fairly standard</td>
+                    <td>frustrating</td>
+                    <td>compact, elegant, and functional</td>
+                </tfoot>
+            </table>
+
+            <p>So where do we start? Well, when it comes to mobile web apps, file and transfer size matters &mdash; the smaller, the better. So the first thing I wanted to do was survey the landscape and compare the size of some of the different APIs that are available. (If I missed some that are lightweight, please let me know.) Although <a href="http://maps.google.com/" target="_blank">Google Maps</a> is the most popular API out there (and deservedly so), it's JavaScript API and tile images are quite large. In my tests below, I created basic map pages for a 1024&times;768 screen using each of the APIs, and I found that Google Maps transfers about <span class="badge badge-error">950 KB</span> of data! This can be a problem for smartphones since they have limited memory. Besides causing an application to crash, a memory-intensive app can also chew up precious kilobytes from a user's data plan, and it can drain their battery faster than they want. Thankfully, we have some choices...</p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>API Provider</th>
+                        <th>Test Page</th>
+                        <th>Requests</th>
+                        <th>Transferred<br>(KB)</th>
+                        <th>Images<br>(KB)</th>
+                        <th>Scripts<br>(KB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="http://msdn.microsoft.com/en-us/library/bb429619.aspx" target="_blank">Bing 6.3</a></td>
+                        <td><a href="bing63_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>43</td>
+                        <td>596.07</td>
+                        <td>358.06 (35)</td>
+                        <td>228.92 (4)</td>
+                    </tr>
+                    <tr>
+                        <td><a href="http://msdn.microsoft.com/en-us/library/ff710049.aspx" target="_blank">Bing 6.3c (Core)</a></td>
+                        <td><a href="bing63c_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>43</td>
+                        <td>423.53</td>
+                        <td>371.28 (34)</td>
+                        <td>46.72 (5)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td><a href="http://msdn.microsoft.com/en-us/library/gg427610.aspx" target="_blank">Bing 7.0</a></td>
+                        <td><a href="bing70_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>40</td>
+                        <td><span class="badge badge-success">431.45<span></td>
+                        <td><span class="badge badge-success">339.49 (30)</span></td>
+                        <td>86.67 (6)</td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://developers.google.com/maps/documentation/javascript/tutorial" target="_blank">Google v3</a></td>
+                        <td><a href="google_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td><span class="badge badge-error">66</span></td>
+                        <td><span class="badge badge-error">949.65</span></td>
+                        <td><span class="badge badge-error">842.93 (54)</span></td>
+                        <td><span class="badge badge-error">105.88 (12)</span></td>
+                    </tr>
+                    <tr>
+                        <td><a href="http://leaflet.cloudmade.com/reference.html" target="_blank">Leaflet 0.3.1 (Cloudmade)</a></td>
+                        <td><a href="leaflet_basic_cloudmade.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td><span class="badge badge-success">30</span></td>
+                        <td>603.23</td>
+                        <td>513.56 (26)</td>
+                        <td>81.52 (1)</td>
+                    </tr>
+                    <tr>
+                        <td><a href="http://developer.mapquest.com/web/documentation/sdk/javascript/v7.0" target="_blank">MapQuest 7.0</a></td>
+                        <td><a href="mapquest_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>60</td>
+                        <td>900.30</td>
+                        <td><span class="badge badge-error">851.82 (53)</span></td>
+                        <td><span class="badge badge-success">46.81 (4)</span></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://github.com/stamen/modestmaps-js/wiki" target="_blank">Modest Maps 1.0.0 beta (MapBox)</a></td>
+                        <td><a href="modestmaps_basic_mapbox.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>38</td>
+                        <td>901.48</td>
+                        <td><span class="badge badge-error">859.96 (35)</span></td>
+                        <td><span class="badge badge-success">39.62 (1)</span></td>
+                    </tr>
+                    <tr>
+                        <td><a href="http://api.maps.ovi.com/devguide/overview.html" target="_blank">Nokia Ovi</a></td>
+                        <td><a href="nokia_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>48</td>
+                        <td>523.87</td>
+                        <td><span class="badge badge-success">372.47 (36)</span></td>
+                        <td><span class="badge badge-error">150.16 (10)</span></td>
+                    </tr>
+                    <tr>
+                        <td><a href="http://docs.openlayers.org/" target="_blank">OpenLayers 2.11 Mobile</a></td>
+                        <td><a href="openlayers_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>52</td>
+                        <td>595.28</td>
+                        <td>508.70 (48)</td>
+                        <td>83.35 (1)</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <div class="pull-right">
+                                &nbsp;&nbsp;&nbsp;
+                                <strong>Legend: </strong>
+                                <span class="badge badge-success">Best</span>
+                                <span class="badge badge-error">Worst</span><br>
+                            </div>
+                            <p class="fineprint">* Note:</p>
+                            <ul class="fineprint">
+                                <li>These pages were tested at 1024&times;768.</li>
+                                <li>The KBs for documents and stylesheets were excluded.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Bing</h3>
+
+            <p>As we can see from the results, Microsoft's <a href="http://www.bing.com/maps/" target="_blank">Bing Maps</a> is a good alternative that has improved a lot since version 6.3. In version 6.3, Bing quietly introduced a "core" version for mobile that stripped out features like drawing lines and polygons. This reduced their JavaScript library from 230 KB to 47 KB! Unfortunately if you needed some of those features, you were out of luck. But in version 7.0, they cleaned up their API and reduced it to 87 KB (without stripping features). So when you combine that savings with Bing's smaller tile size, the Bing test map transferred <span class="badge badge-success">432 KB</span> &mdash; that's less than half of Google Maps! So I could stop here and just tell you to use Bing instead, but (as you'll see) it's always good to look at other options....</p>
+
+            <h3>Modest Maps</h3>
+
+            <p>Especially if we look at the API with the smallest library, <a href="http://modestmaps.com/" target="_blank">Modest Maps</a>, is a new library that weighs in at only <span class="badge badge-success">40 KB</span>! It was designed to be simple, extensible, and it even works in older browsers like IE7. However, it's tile size was the largest at <span class="badge badge-error">861 KB</span>!</p>
+
+            <h3>MapQuest</h3>
+
+            <p><a href="http://www.mapquest.com/" target="_blank">MapQuest</a> is a provider that has been around for awhile. Their version 7.0 is the second smallest library at only <span class="badge badge-success">47 KB</span>, but their tile size is the third largest at <span class="badge badge-error">852 KB</span>.</p>
+
+            <h3>Nokia Ovi</h3>
+
+            <p>So if we're also looking for an API that has the smallest tile size, Bing looks like the best choice, but <a href="http://maps.nokia.com/" target="_blank">Nokia's Ovi</a> tiles are also lightweight at <span class="badge badge-success">373 KB</span>, but their JavaScript library is the largest at <span class="badge badge-error">151 KB</span>! It's too bad we couldn't use Modest Map's compact library with Bing's lightweight tiles... or can we? Well, in a way we can...</p>
+
+            <h3>OpenLayers</h3>
+
+            <p><a href="http://openlayers.org/" target="_blank">OpenLayers</a> as the name suggests is a completely free and Open Source library that allows you to switch between different base layers like Google Maps, Virtual Earth (Bing), Yahoo, etc. From a business model, this approach makes a lot of sense because it means you're not tied to one mapping provider and you're not as restricted by licensing or forced-API changes. With this approach, you can switch providers without having to completely change your code.</p>
+
+            <p>However, OpenLayers supports other maps by creating their own API layer <strong>on top</strong> of the other mapping APIs. So to use OpenLayers with Google or Bing, you'd have to include their libraries as well! This approach is fine for desktop, but it doesn't make sense for mobile. Also, OpenLayers is not as well-documented as some of the others, and it's API can be harder to learn. But, if you're doing some serious GIS work, this is an API you'll want to consider.</p>
+
+            <h3>Leaflet</h3>
+
+            <p>Fortunately, a new lightweight library called <a href="http://leaflet.cloudmade.com/index.html" target="_blank">Leaflet</a> has been gaining popularity because it is a modern Open Source library that uses HTML5 and CSS3. It was designed from the ground up to work in modern and mobile browsers. Since CSS3 is hardware-accelerated on many mobile devices, visuals like zooming and fading will be much faster than JavaScript-based animations.</p>
+
+            <p>Also, Leaflet has an easy-to-use API. So just how easy is it to add a map? First, we include the CSS and JavaScript:</p>
+
+            <pre class="prettyprint">
+                <code class="language-html">
+&lt;link rel=&quot;stylesheet&quot; href=&quot;leaflet.css&quot;&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;leaflet.js&quot;&gt;&lt;/script&gt;
+                </code>
+            </pre>
+
+            <p>Then we create a new tile layer specifying the format of the tile URL with some options like maximum zoom level:</p>
+
+            <pre class="prettyprint">
+                <code class="language-js">
+var tileUrl = "http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png",
+    tileAttr = "Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade",
+    tileLayer = new L.TileLayer(tileUrl, {
+        maxZoom: 18,
+        attribution: tileAttr
+    });
+                </code>
+            </pre>
+
+            <p>Then we create the map and add the tile layer to it:</p>
+
+            <pre class="prettyprint">
+                <code class="language-js">
+var map = new L.Map("map", {
+    center: new L.LatLng(43.6425778753, -79.3870621920), // Toronto
+    zoom: 14
+});
+
+map.addLayer(tileLayer);
+                </code>
+            </pre>
+
+            <p>That's it! Like OpenLayers, Leaflet allows you to <strong>easily</strong> switch between tile providers, but it does this in a much cleaner way &mdash; all you have to do is change the tile URL. So you don't even need to include Google's API to use their tiles. Of course, if you do use another tile provider, make sure you include the proper attribution.</p>
+
+            <pre class="prettyprint">
+                <code class="language-js">
+var tileUrl = "http://{s}.googleapis.com/vt?lyrs=m@174225136&src=apiv3&hl=en-US&x={x}&y={y}&z={z}&s=Galile&style=api%7Csmartmaps",
+    tileAttr = "Map data &copy; 2012 Google",
+    tileLayer = new L.TileLayer(tileUrl, {
+        maxZoom: 22,
+        subdomains: ['mt0', 'mt1'],
+        attribution: tileAttr
+    });
+                </code>
+            </pre>
+
+            <p>So with this simple approach, you can change the base tile layer to almost any provider as long as they are using OpenStreetMap's <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames" target="_blank">"Slippy"</a> tile naming convention, which is pretty much every provider, except for Bing because Microsoft uses a different <a href="http://msdn.microsoft.com/en-us/library/bb259689.aspx" target="_blank">"Quadkey"</a> convention.
+
+            <h3>Tile Naming Conventions</h3>
+
+            <p>Basically, Slippy uses a straight-forward naming convention that looks like this ("mustache-style" URL template):</p>
+            <pre>
+http://<span class="highlight">{s}</span>.tile.cloudmade.com/YOUR-API-KEY/997/256/<span class="highlight">{z}</span>/<span class="highlight">{x}</span>/<span class="highlight">{y}</span>.png
+            </pre>
+            <p>where,</p>
+            <ul>
+                <li>{s} = subdomain</li>
+                <li>{x} = x-coordinate</li>
+                <li>{y} = y-coordinate</li>
+                <li>{z} = zoom level</li>
+            </ul>
+            <p>Here's an example of an actual tile (near the CN Tower):</p>
+            <pre>
+http://<span class="highlight">b</span>.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/<span class="highlight">14</span>/<span class="highlight">4578</span>/<span class="highlight">5980</span>.png
+            </pre>
+
+            <p>But if we compare Slippy to the Quadkey format, you'll notice it's different enough that we can't easily use it (at least not with Leaflet &mdash; we can with Modest Maps):</p>
+
+            <pre>
+http://ecn.<span class="highlight">{s}</span>.tiles.virtualearth.net/tiles/<span class="highlight">{style}</span><span class="highlight">{quadkey}</span>?g=914&mkt=en-us&lbl=l1&stl=h&shading=hill&n=z
+
+http://ecn.<span class="highlight">t0</span>.tiles.virtualearth.net/tiles/<span class="highlight">r</span><span class="highlight">03022313122210</span>?g=914&mkt=en-us&lbl=l1&stl=h&shading=hill&n=z
+            </pre>
+            <p>because the Quadkey format works like this:</p>
+            <ul>
+                    <li>At zoom level 1 (of the entire world), there are only 4 tiles (or quadrants) numbered from 0 to 3. At the next zoom level, each tile is sub-divided into "quads", and so on.</li>
+                    <li>So the length of the quadkey represents the number of zoom levels.</li>
+                    <li>The quadkey of any tile starts with the quadkey of its parent tile.</li>
+                    <li>The first letter (which is not really part of the quadkey) specifies the base map style (r = Road, a = Aerial (Satellite), h = Hybrid (Aerial + Labels)</li>
+            </ul>
+
+            <figure>
+                <img src="img/samples/quadkey_levels.jpg" alt="Quadkey Levels" title="Quadkey Levels">
+                <figcaption>Source: <a href="http://msdn.microsoft.com/en-us/library/bb259689.aspx" target="_blank">"Bing Maps Tile System"</a></figcaption>
+            </figure>
+
+            <p>Although it might be tempting to complain about Microsoft being different, from a database perspective, quadkeys makes indexing and storage really efficient.</p>
+
+            <h3>Hybrid Approach</h3>
+
+            <p>Hopefully, that gives you a better understanding of tile structures. Do you see the possibilities? This is AWESOME! This means we can easily interchange libraries and tiles to suit our needs. Essentially, we can build our own "hybrid" API or "mashup" from the best pieces available. So now we can have an API that uses Bing's tiles, but is even <strong>lighter</strong> than Bing itself (which was already light to begin with at 432 KB)!</p>
+
+            <p>Here are some other combinations that are under 450 KB that you may want to consider:</p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>API Provider</th>
+                        <th>Test Page</th>
+                        <th>Requests</th>
+                        <th>Transferred<br>(KB)</th>
+                        <th>Images<br>(KB)</th>
+                        <th>Scripts<br>(KB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Modest Maps 1.0.0 beta + Bing Tiles</td>
+                        <td><a href="modestmaps_basic_bing.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>38</td>
+                        <td><span class="badge badge-success">380.51</span></td>
+                        <td>338.97 (35)</td>
+                        <td>39.62 (1)</td>
+                    </tr>
+                    <tr>
+                        <td>Modest Maps 1.0.0 beta + Nokia Tiles</td>
+                        <td><a href="modestmaps_basic_nokia.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>38</td>
+                        <td><span class="badge badge-success">412.41</span></td>
+                        <td>370.93 (35)</td>
+                        <td>39.62 (1)</td>
+                    </tr>
+                    <tr>
+                        <td>Leaflet 0.3.1 + Nokia Tiles</td>
+                        <td><a href="leaflet_basic_nokia.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>30</td>
+                        <td><span class="badge badge-success">431.78</span></td>
+                        <td>342.09 (26)</td>
+                        <td>81.52 (1)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Since we were able to make Bing lighter, I was curious to see if we could do the same with Google, and the result really surprised me! As you may recall, Google Maps transferred <strong>950 KB</strong>, but when I combined Leaflet with Google's tiles, it only transferred <strong>498 KB</strong>! That's half the size, which is great! But why such a difference?! Well, if we look at the number of requests, it gives us a big clue &mdash; Google's API is loading <strong>twice</strong> the number of tiles!</p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>API Provider</th>
+                        <th>Test Page</th>
+                        <th>Requests</th>
+                        <th>Transferred<br>(KB)</th>
+                        <th>Images<br>(KB)</th>
+                        <th>Scripts<br>(KB)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Google v3</td>
+                        <td><a href="google_basic.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>66</td>
+                        <td>949.65</td>
+                        <td>842.93 (54)</td>
+                        <td>105.88 (12)</td>
+                    </tr>
+                    <tr>
+                        <td>Leaflet 0.3.1 + Google Tiles</td>
+                        <td><a href="leaflet_basic_google.html" target="_blank"><i class="icon-share-alt"></i></a></td>
+                        <td>30</td>
+                        <td>497.71</td>
+                        <td>408.01 (26)</td>
+                        <td>81.52 (1)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Difference:</strong></td>
+                        <td>&nbsp;</td>
+                        <td style="border-top: 5px solid #000;"><span class="badge badge-error">36</span></td>
+                        <td style="border-top: 5px solid #000;"><span class="badge badge-error">451.94</span></td>
+                        <td style="border-top: 5px solid #000;"><span class="badge badge-error">434.92</span></td>
+                        <td style="border-top: 5px solid #000;">24.36</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>At first, I thought it might be pre-fetching or "lazy loading" tiles for areas outside the bounding box in case a user pans or zooms. But when I inspected the extra tiles, I found it's actually loading another set of tiles for the <strong>same area</strong>, which I haven't been able to figure out why &mdash; the extra tiles don't seem to be displayed anywhere. It's still a map view tile, but it has slightly different labels. Notice the one on the right has "Corktown" and the other one doesn't?</p>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Tile Set 1 (displayed)</th>
+                        <th>Tile Set 2 (not displayed)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img src="img/samples/vt_dvp_gardiner1_circle.png"><br>
+                            http://mt0.googleapis.com/vt<br>
+                            ?lyrs=<span class="highlight">m@174232040</span><br>
+                            &src=apiv3<br>
+                            &hl=en-US<br>
+                            &x=4580<br>
+                            &y=5979<br>
+                            &z=14<br>
+                            &s=Galileo<br>
+                            &style=api%7Csmartmaps
+                        <td>
+                            <img src="img/samples/vt_dvp_gardiner2_circle.png"><br>
+                            http://mt0.googleapis.com/vt<br>
+                            ?lyrs=<span class="highlight">m@174000000</span><br>
+                            &src=apiv3<br>
+                            &hl=en-US<br>
+                            &x=4580<br>
+                            &y=5979<br>
+                            &z=14<br>
+                            &s=Galileo<br>
+                            &style=api%7Csmartmaps<br>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>I'm sure there's a good reason for this, but I'd be curious if there's an option to disable that? Either way, the good news is Google's tiles are not as heavy as I first thought so we can use them with Modest Maps or Leaflet to build familiar-looking mapping applications that will be more lightweight especially for mobile.</p>
+
+            <p>Besides being able to switch between providers, this hybrid approach has other advantages:<p>
+
+            <ol>
+                <li>For packaged applications like <a href="https://bdsc.webapps.blackberry.com/html5/" target="_blank">BlackBerry WebWorks</a>, you can locally include the required API files (JavaScript, CSS, and images) with your application so you don't need to fetch them from a remote server. This makes loading an app faster and reduces bandwidth charges.</li>
+                <li>Another advantage of having local files is you don't have to worry as much about a provider forcing an API change that can break your customizations. Although, you can usually reference an older API, sometimes a provider will force an upgrade even if you try to reference an older version.</li>
+                <li>In the case of Yahoo! Maps, which discontinued its map service in September 2011, a local version means your app can still work. For example, Leaflet provides a layer control so you can select from different base layers.</li>
+            </ol>
+
+            <p>These advantages are important especially for enterprise or mission-critical applications that need to minimize risk and downtime. So in the next post, I'll cover some techniques for adding offline capabilities to your map. Hopefully, with this "best of breed" approach, you'll be ready to build a map-based app that will feel more like a paper airplane than a paper ball.</p>
+
+            <div style="text-align: center;">
+                <img id="airplane" src="img/origami_sm.png" alt="Origami Airplane" title="Origami Airplane"><br>
+                <p class="fineprint">(click to throw the paper airplane)</p>
+                <hr>
+            </div>
+
+            <footer>
+                <p>&copy; Copyright 2012</p>
+            </footer>
+        </div>
+
+        <script src="lib/jquery-1.7.2/jquery-1.7.2.min.js"></script>
+        <script src="lib/bootstrap-2.0.2/js/bootstrap.min.js"></script>
+        <script src="lib/prettify/prettify.js"></script>
+        <script>
+        document.getElementById('airplane').addEventListener('click', function() {
+            var t;
+            this.addEventListener("webkitAnimationEnd", function() {
+                t = setTimeout(function () {
+                    document.getElementById('airplane').className = '';
+                    clearTimeout(t);
+                }, 2000);
+            }, false);
+
+            this.className = 'fly';
+        }, false);
+
+        prettyPrint();
+        </script>
+    </body>
+</html>

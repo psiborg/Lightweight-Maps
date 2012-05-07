@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Preload Data</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <style>
+        </style>
+    </head>
+    <body>
+        <div id="results">Preloading data...</div>
+        <script src="dat/cities_ca.json"></script>
+        <script>
+        function populateDB (tx) {
+            var startTime = new Date();
+            tx.executeSql('DROP TABLE IF EXISTS cities');
+            tx.executeSql('CREATE TABLE IF NOT EXISTS cities (locId INTEGER PRIMARY KEY, country, region, city, latitude, longitude)');
+            //console.time('insert');
+            for (var i = 0, ii = cities.length; i < ii; i++) {
+                tx.executeSql("INSERT INTO cities (locId, country, region, city, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?)", [
+                    null, cities[i].country, cities[i].region, cities[i].city, cities[i].latitude, cities[i].longitude
+                ]);
+            }
+            var elapsedTime = new Date() - startTime;
+            //console.timeEnd('insert');
+            console.log('Inserted ' + cities.length + ' records.');
+            alert('Inserted ' + cities.length + ' records into SQLite in ' + elapsedTime + 'ms.');
+        }
+
+        function errorCB (err) {
+            console.error("Error processing SQL: " + err.code);
+        }
+
+        function successCB () {
+            console.info("success!");
+        }
+
+        var db = window.openDatabase("mapdata", "1.0", "Map Data", (5 * 1024));
+        db.transaction(populateDB, errorCB, successCB);
+        </script>
+    </body>
+</html>
