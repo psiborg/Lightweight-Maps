@@ -534,7 +534,16 @@ http://ecn.<span class="highlight">t0</span>.tiles.virtualearth.net/tiles/<span 
         <script>
         document.getElementById('airplane').addEventListener('click', function() {
             var t;
+
             this.addEventListener("webkitAnimationEnd", function() {
+                t = setTimeout(function () {
+                    document.getElementById('airplane').className = '';
+                    clearTimeout(t);
+                }, 2000);
+            }, false);
+
+            // Mozilla
+            this.addEventListener("animationend", function() {
                 t = setTimeout(function () {
                     document.getElementById('airplane').className = '';
                     clearTimeout(t);
