@@ -1,0 +1,8 @@
+cctv*.png
+http://mapicons.nicolasmollet.com/markers/offices/cctv/
+
+umbrella*.png
+http://mapicons.nicolasmollet.com/markers/stores/apparel/umbrella/
+
+License: Creative Commons 3.0 BY-SA
+Commercial usage: Allowed

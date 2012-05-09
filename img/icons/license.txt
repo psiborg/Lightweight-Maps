@@ -1,0 +1,5 @@
+app_*.*
+http://www.iconarchive.com/show/mobile-icons-by-webiconset/maps-icon.html
+
+License: Freeware
+Commercial usage: Allowed

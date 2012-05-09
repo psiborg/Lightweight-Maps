@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+    Copyright 2012 Research In Motion Limited.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<html>
+    <head>
+        <title>Bing 6.3c Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="map" style="position: relative; width: 100%; height: 400px;"></div>
+        <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.3c"></script>
+        <script>
+        var map = new VEMap("map");
+        map.LoadMap(new VELatLong(43.6425778753, -79.3870621920), 14 , "r", false);
+        map.Resize(document.body.clientWidth, document.body.clientHeight);
+        </script>
+    </body>
+</html>

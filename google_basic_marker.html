@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+    Copyright 2012 Research In Motion Limited.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<html>
+    <head>
+        <title>Google Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script>
+        var lat = 43.642566, lng = -79.387056,
+        //var lat = 43.64257, lng = -79.38706,
+        //var lat = 43.6426, lng = -79.3871,
+        //var lat = 43.643, lng = -79.387,
+        //var lat = 43.64, lng = -79.39,
+        //var lat = 43.6, lng = -79.4,
+        //var lat = 44, lng = -80,
+            mapOptions = {
+                center: new google.maps.LatLng(lat, lng),
+                zoom: 21,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                navigationControlOptions: {
+                        style: google.maps.NavigationControlStyle.SMALL
+                },
+                scaleControl: true,
+                keyboardShortcuts: false
+            },
+            map = new google.maps.Map(document.getElementById("map"), mapOptions)
+            marker = new google.maps.Marker({
+                title: 'CN Tower',
+                map: map,
+                position: new google.maps.LatLng(lat, lng)
+            });
+
+            google.maps.event.addListener(map, 'dblclick', function(event) {
+              console.log('Latitude: ' + event.latLng.lat() + ', Longitude: ' + event.latLng.lng() + ', Zoom: ' + map.getZoom());
+            });
+            google.maps.event.addListener(map, 'zoom_changed', function(event) {
+              console.log('Zoom: ' + map.getZoom());
+            });
+        </script>
+    </body>
+</html>
+<!--
+Decimals        Zoom Level      Scale
+6               21              5m / 20ft (building)
+5               18              50m / 100ft (block)
+4               16              200m / 500ft
+3               14              500m / 2000ft
+2               12              2km / 2mi (city)
+1               6               200km / 100mi (province/state)
+0               1               5000 km / 2000mi (world)
+-->

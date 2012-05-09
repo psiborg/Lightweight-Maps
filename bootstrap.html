@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!--
+    Copyright 2012 Research In Motion Limited.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<html>
+    <head>
+        <title>Bootstrap + Leaflet Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link href="img/icons/app_16x16.ico" rel="icon" type="image/x-icon">
+        <link href="lib/bootstrap-2.0.2/css/bootstrap.css" rel="stylesheet">
+        <style>
+        body {
+            margin: 0;
+            padding-top: 40px;
+        }
+        #map {
+            width: 100%;
+            height: 256px;
+        }
+        .content {
+            padding: 10px;
+        }
+        .panel {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #CCC;
+            border-radius: 10px;
+            text-align: center;
+        }
+        </style>
+        <link href="lib/bootstrap-2.0.2/css/bootstrap-responsive.css" rel="stylesheet">
+        <link rel="stylesheet" href="lib/leaflet-0.3.1/leaflet.css">
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="#">Leaflet</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
+                            <li><a href="#form" data-toggle="tab">Form</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Help <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#documentation" data-toggle="tab">Documentation</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#about" data-toggle="tab">About</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <form class="navbar-search pull-left" action="">
+                            <input type="text" class="search-query span2" placeholder="Search">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="home">
+                <div id="map"></div>
+            </div>
+
+            <div class="tab-pane fade" id="form">
+                <form class="form-horizontal">
+                    <fieldset>
+                        <legend>Controls Bootstrap supports</legend>
+                        <div class="control-group">
+                            <label class="control-label" for="input01">Text input</label>
+                            <div class="controls">
+                                <input type="text" class="input-xlarge" id="input01">
+                                <p class="help-block">In addition to freeform text, any HTML5 text-based input appears like so.</p>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="optionsCheckbox">Checkbox</label>
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="optionsCheckbox" value="option1">
+                                    Option one is this and that&mdash;be sure to include why it's great
+                                </label>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="select01">Select list</label>
+                            <div class="controls">
+                                <select id="select01">
+                                    <option>something</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="multiSelect">Multicon-select</label>
+                            <div class="controls">
+                                <select multiple="multiple" id="multiSelect">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="fileInput">File input</label>
+                            <div class="controls">
+                                <input class="input-file" id="fileInput" type="file">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="textarea">Textarea</label>
+                            <div class="controls">
+                                <textarea class="input-xlarge" id="textarea" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button class="btn">Cancel</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+            <div class="tab-pane fade content" id="item1">
+                <p>Thing 1</p>
+            </div>
+
+            <div class="tab-pane fade content" id="item2">
+                <p>Thing 2</p>
+            </div>
+
+            <div class="tab-pane fade content" id="item3">
+                <p>Thing 3</p>
+            </div>
+
+            <div class="tab-pane fade content" id="documentation">
+                <h2>Documentation</h2>
+                <hr><br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis a mauris erat. Vivamus elit ante, suscipit nec aliquet nec, iaculis in ante. Nunc a adipiscing risus. Cras fermentum venenatis sem, a suscipit erat tincidunt vitae. Curabitur non tellus eget leo imperdiet mattis at quis massa. Nullam at nunc augue, accumsan blandit neque. Aliquam blandit, dui vitae volutpat vulputate, metus tellus gravida metus, sed varius nibh metus ut sapien. Vivamus mauris ligula, pulvinar eu elementum non, aliquam id arcu. Duis imperdiet, sapien eu condimentum tempus, quam dolor placerat justo, quis posuere urna velit vel purus. Aenean accumsan, purus ut rhoncus lobortis, diam massa imperdiet libero, id rutrum nunc nisl vel urna. Proin id urna diam, sed molestie justo. Phasellus diam est, pellentesque eget pellentesque vitae, convallis id urna. Integer blandit, erat eu hendrerit convallis, ipsum nulla scelerisque eros, venenatis ornare dolor orci in arcu. Donec justo mi, dapibus ac dignissim vel, egestas id magna.</p>
+                <p>Aliquam porttitor aliquet nisl faucibus mattis. Duis imperdiet fermentum diam eu rhoncus. Fusce feugiat, eros ac scelerisque pharetra, odio velit consequat sem, in bibendum nisl arcu id magna. Nulla facilisis euismod felis sit amet feugiat. Nunc id iaculis nisl. Duis sodales scelerisque magna, at tincidunt odio tincidunt quis. Praesent dignissim laoreet fringilla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+                <p>Vestibulum nulla nisi, ornare sed congue tempus, consequat in elit. Aliquam porta est risus. Maecenas eros erat, aliquet ut semper vel, venenatis quis nulla. Vestibulum accumsan dolor vel mi bibendum in accumsan justo rhoncus. Donec et nunc mi. Ut viverra pellentesque posuere. Maecenas lobortis condimentum dui dictum congue. Morbi ultricies dictum massa eget lobortis. Vivamus sagittis sagittis arcu, at laoreet tortor commodo eu. Suspendisse ullamcorper magna sit amet tellus viverra et pellentesque urna hendrerit. Vivamus vitae orci vel nisl eleifend ultrices eu sit amet mi. Ut volutpat varius ante ac lacinia. Mauris eu pulvinar mauris. Nulla facilisi. Cras dictum venenatis dui vitae varius.</p>
+                <p>Nulla facilisi. Integer sed dui est, nec hendrerit urna. Donec faucibus mauris a orci egestas commodo. Quisque venenatis sollicitudin elit. Donec turpis massa, tempus ac mollis sit amet, cursus eget quam. Nam blandit tellus eu justo rutrum sed consequat nulla porta. Fusce erat est, rutrum ut faucibus vitae, mollis ac est.</p>
+                <p>Duis magna augue, egestas vitae mattis nec, pretium et neque. In hac habitasse platea dictumst. Aenean rutrum iaculis magna ultrices fringilla. Aliquam sit amet tortor felis. Fusce et massa eros, vitae suscipit mauris. Integer consectetur eros luctus sem euismod vehicula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In aliquam, leo feugiat aliquet facilisis, velit neque porta elit, vel molestie leo elit eu dui. Aliquam erat volutpat. Maecenas tempor, enim pulvinar ultrices blandit, lectus nisl sagittis lacus, a gravida lacus neque at magna.</p>
+                <p>Morbi sodales purus eu augue dapibus sed mollis urna sagittis. Morbi mauris ipsum, bibendum id euismod eu, ultrices nec odio. Mauris at massa ut nisl commodo bibendum dictum suscipit metus. In leo est, facilisis vitae ultrices nec, tristique non turpis. Maecenas sodales consequat metus, eget pulvinar sem elementum at. Curabitur vitae mi eget nisl volutpat viverra. Nam sed velit vel nibh mollis imperdiet at quis nulla. Phasellus dapibus luctus orci, at venenatis tortor pharetra sit amet. Phasellus quis eros id nisl porta feugiat. Morbi vel augue scelerisque est tristique euismod.</p>
+                <p>Cras euismod ipsum quis diam dapibus sed mattis ante fringilla. Fusce sit amet imperdiet arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ante augue, porttitor non scelerisque non, sollicitudin sit amet turpis. Etiam ornare pharetra venenatis. Pellentesque tristique elementum urna quis fringilla. Nam velit neque, faucibus in gravida quis, tincidunt sodales neque. Aenean eget ipsum libero, vel pretium libero. In arcu elit, posuere a vestibulum sed, fringilla a turpis. Donec sit amet odio risus, vel consequat ante. Sed congue tellus eget risus placerat sed malesuada quam fringilla. Cras nec sem risus, sed tristique diam. Nullam consequat, eros ac congue venenatis, arcu lacus pellentesque purus, sit amet lacinia lorem eros sed nunc. Vivamus molestie scelerisque adipiscing.</p>
+                <p>Donec feugiat sodales nibh, quis dictum nulla vehicula sit amet. Ut adipiscing libero et nibh scelerisque vel fringilla est aliquam. Curabitur ullamcorper, tellus vitae consectetur convallis, quam turpis condimentum est, vitae egestas odio nibh et diam. Pellentesque eu nunc massa, quis iaculis tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc aliquet aliquet diam id placerat. Nam feugiat urna non tellus mollis iaculis. Sed euismod rutrum neque, vitae tempus justo cursus ac. Cras ut sem libero. Nunc id nunc augue. Morbi augue nibh, feugiat in aliquam ac, elementum quis nibh. Phasellus felis erat, dignissim eu adipiscing at, accumsan placerat neque. Suspendisse rhoncus vestibulum magna sit amet sagittis. Vivamus fermentum dignissim elit, at malesuada tellus accumsan et. Praesent sit amet enim arcu, et accumsan odio.</p>
+                <p>Fusce ut lectus orci. Phasellus tempor dictum urna eget interdum. Nulla sit amet feugiat purus. Sed nisl mi, viverra eget lacinia eget, consequat nec lectus. Nullam dictum lectus sit amet sem interdum varius. Mauris mollis molestie ante, a vulputate lorem eleifend vel. Nam ut hendrerit sapien. Maecenas consequat rutrum diam vitae vestibulum. Donec non magna at quam lobortis sodales. Vivamus ultricies bibendum tellus, sed adipiscing sapien ultrices nec. Mauris eu ipsum ut ante iaculis iaculis. Fusce pretium placerat est et semper. Sed malesuada risus et leo gravida ultricies. Maecenas ac magna et lectus vehicula ullamcorper tempus id lorem. Donec dictum laoreet dolor ac semper. Maecenas posuere ultrices enim id dictum.</p>
+                <p>Aenean vulputate magna a mauris aliquet non fermentum metus porta. Pellentesque vel purus ligula. Aliquam tincidunt porta nisi facilisis convallis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur ut dolor quis sapien facilisis semper in vel ante. Maecenas vehicula arcu cursus arcu accumsan mollis. Vestibulum quis risus id leo tristique pulvinar ac ac erat. Aliquam ac orci velit, sit amet accumsan velit. Vestibulum eget mi non mauris placerat posuere. Sed tincidunt diam eu lacus pulvinar ultrices.</p>
+            </div>
+
+            <div class="tab-pane fade panel" id="about">
+                <h3>Bootstrap + Leaflet</h3>
+                <p>Version 1.0</p>
+            </div>
+        </div>
+
+        <script src="lib/jquery-1.7.2/jquery-1.7.2.min.js"></script>
+        <script src="lib/bootstrap-2.0.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="lib/leaflet-0.3.1/leaflet.js"></script>
+        <script>
+        function updateMap(orientation) {
+            var navheight = (Math.abs(orientation) === 90) ? 50 : 40;
+            document.getElementById('map').style.height = (window.innerHeight - navheight) + 'px';
+        }
+
+        window.onorientationchange = function() {
+            updateMap(window.orientation);
+            map.invalidateSize();
+        }
+
+        updateMap();
+
+        var tileUrl = 'http://{s}.maptile.maps.svc.ovi.com/maptiler/v2/maptile/newest/normal.day/{z}/{x}/{y}/256/png8',
+            tileAttr = '',
+            tileLayer = new L.TileLayer(tileUrl, {
+                maxZoom: 18,
+                attribution: tileAttr
+            });
+
+        var map = new L.Map('map', {
+            center: new L.LatLng(43.6425778753, -79.3870621920),
+            zoom: 14
+        });
+
+        map.addLayer(tileLayer);
+        </script>
+    </body>
+</html>
