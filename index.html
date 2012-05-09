@@ -47,6 +47,15 @@
                 }
             }
 
+            @-moz-keyframes flyAway {
+                0% {
+                    -moz-transform: rotate(0deg) translate(0px, 0px);
+                }
+                100% {
+                    -moz-transform: rotate(15deg) translate(-1920px, -1200px);
+                }
+            }
+
             .fly {
                 /*border: 1px solid #CCC;*/
                 -webkit-animation-name: flyAway;
@@ -54,6 +63,12 @@
                 -webkit-animation-duration: 2s;
                 -webkit-animation-iteration-count: 1;
                 -webkit-transform: rotate(15deg) translate(-1920px, -1200px);
+
+                -moz-animation-name: flyAway;
+                -moz-animation-timing-function: ease-in;
+                -moz-animation-duration: 2s;
+                -moz-animation-iteration-count: 1;
+                -moz-transform: rotate(15deg) translate(-1920px, -1200px);
             }
         </style>
         <link href="lib/bootstrap-2.0.2/css/bootstrap-responsive.css" rel="stylesheet">
