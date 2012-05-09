@@ -72,7 +72,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </a>
-                    <a class="brand" href="#">Blog</a>
+                    <a class="brand" href="https://github.com/emamob">EMA Mobility</a>
                     <div class="nav-collapse">
                         <ul class="nav">
                             <li class="active"><a href="#">Home</a></li>
@@ -98,12 +98,13 @@
                                     <li><a href="modestmaps_basic_mapbox.html" target="_blank">Modest Maps (MapBox)</a></li>
                                     <li><a href="modestmaps_basic_nokia.html" target="_blank">Modest Maps (Nokia)</a></li>
                                     <li class="divider"></li>
-                                    <li class="nav-header">Full</li>
+                                    <li class="nav-header">Full Samples</li>
                                     <li><a href="trafcams.html" target="_blank">Leaflet + Traffic Cameras</a></li>
                                     <li><a href="bootstrap.html" target="_blank">Bootstrap + Leaflet</a></li>
                                     <li><a href="map.html" target="_blank">Bootstrap + Leaflet + Traffic Cameras + Weather</a></li>
                                 </ul>
                             </li>
+                            <li><a href="https://github.com/emamob/Lightweight-Maps">View on GitHub</a></li>
                         </ul>
                     </div>
                 </div>
@@ -307,7 +308,9 @@ map.addLayer(tileLayer);
                 </code>
             </pre>
 
-            <p>That's it! Like OpenLayers, Leaflet allows you to <strong>easily</strong> switch between tile providers, but it does this in a much cleaner way &mdash; all you have to do is change the tile URL. So you don't even need to include Google's API to use their tiles. Of course, if you do use another tile provider, make sure you include the proper attribution.</p>
+            <p>That's it! Like OpenLayers, Leaflet allows you to <strong>easily</strong> switch between tile providers, but it does this in a much cleaner way &mdash; all you have to do is change the tile URL. So you don't even need to include a vendor's API to use their tiles.</p>
+
+            <div class="alert alert-error">Of course, if you do use another tile provider, make sure you contact them about licensing and include the proper attribution.</div>
 
             <pre class="prettyprint">
                 <code class="language-js">
@@ -492,7 +495,7 @@ http://ecn.<span class="highlight">t0</span>.tiles.virtualearth.net/tiles/<span 
             <p>Besides being able to switch between providers, this hybrid approach has other advantages:<p>
 
             <ol>
-                <li>For packaged applications like <a href="https://bdsc.webapps.blackberry.com/html5/" target="_blank">BlackBerry WebWorks</a>, you can locally include the required API files (JavaScript, CSS, and images) with your application so you don't need to fetch them from a remote server. This makes loading an app faster and reduces bandwidth charges.</li>
+                <li>For packaged applications like <a href="https://bdsc.webapps.blackberry.com/html5/" target="_blank">BlackBerry&reg; WebWorks&trade;</a>, you can locally include the required API files (JavaScript, CSS, and images) with your application so you don't need to fetch them from a remote server. This makes loading an app faster and reduces bandwidth charges.</li>
                 <li>Another advantage of having local files is you don't have to worry as much about a provider forcing an API change that can break your customizations. Although, you can usually reference an older API, sometimes a provider will force an upgrade even if you try to reference an older version.</li>
                 <li>In the case of Yahoo! Maps, which discontinued its map service in September 2011, a local version means your app can still work. For example, Leaflet provides a layer control so you can select from different base layers.</li>
             </ol>
